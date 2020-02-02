@@ -1,0 +1,38 @@
+\chapter{Web API}
+\section{Remote Procedure Call}
+Una RPC è quando un programma invoca una procedura per eseguirla su una macchina differente da quella su cui è in esecuzione il programma. Il chiamante (client) realizza una chiamata locale al componente software (stub) che comunica con l'oggetto remoto. Nel lato chiamato (server) c'è un componente (scheletro) che riceve la chiamata dello stub e realizza una chiamata locale al codice del server. RPC utilizza il protocollo HTTP e i dati sono rappresentati in JSON oppure XML. Generalmente, il flusso di esecuzione di RPC è il seguente:
+\begin{enumerate}
+\item Il client chiama il proprio stub come in una tradizionale chiamata a procedura locale.
+\item Lo stub del client inserisce i parametri in un messaggio e realizza una chiamata di sistema per inviare il messaggio.
+\item Il sistema operativo del client invia il messaggio dalla macchina del client alla macchina del server.
+\item Il sistema operativo del server fornisce i pacchetti in entrata allo stub del server.
+\item Lo stub del server estrae i parametri del messaggio.
+\item Infine, lo stub del server chiama la procedura del server.
+\end{enumerate}
+La risposta segue gli stessi passi, ma in ordine inverso.
+\subsection{XML-RPC}
+Esso è un protocollo RPC il quale utilizza XML per codificare i dati. I dati che possono essere convertiti in XML sono scalari, arrays oppure structs. Esso invia una richiesta HTTP al server che implementa il protocollo. Ci sono tre tipi di messaggio: messaggio di richiesta, messaggio di risposta e messaggio di errore. L'elemento principale del messaggio di richiesta è il \textbf{methodCall}. Esso contiene gli elementi \textbf{methodName} e \textbf{params}. Il primo contiene il nome della procedura invocata e il secondo contiene una lista di valori per i parametri della procedura. L'elemento principale del messaggio di risposta è \textbf{methodResponse}. Esso contiene un elemento \textbf{params}, il quale è una lista di valori.
+\subsection{JSON-RPC}
+Esso è un protocollo RPC il quale utilizza JSON per codificare i dati. La richiesta deve contenere tre proprietà: \textbf{metodo} è una stringa con il nome del metodo da invocare, \textbf{params} è un array di oggetti da fornire come parametro al metodo definito e \textbf{id} è un valore di un qualsiasi tipo, utilizzato per abbinare la risposta con la richiesta a cui si stà rispondendo. Anche il responso deve contenere tre proprietà: \textbf{result} sono i dati restituiti dal metodo invocato, se un errore si verifica mentre invochiamo il metodo, questo valore deve essere null, \textbf{error} è uno specifico codice di errore se si verifica un errore, altrimenti è null, \textbf{id} è l'id della richiesta a cui si stà rispondendo. E' possibile utilizzare le notifiche: in questo caso l'id deve essere settato a null. JSON-RPC può essere utilizzato come un semplice sistema di richiesta e responso, oppure per inviare delle notifiche a tutti i clients.
+\subsection{REST}
+Essa è la più semplice forma di RPC. Le richieste sono mappate a metodi HTTP (GET, POST). Il nome del metodo è un parametro della chiamata e il risultato può essere formattato come dati XML oppure JSON. Il suo nome deriva da RESTful Web Services: il protocollo è stateless, ogni risorsa è identificata da un URI e le operazioni CRUD sono mappate a verbi HTTP (POST, GET, PUT, DELETE).
+\section{Gestione delle risorse}
+Naturalmente, bisogna gestire le risorse sulla base di diversi aspetti:
+\begin{itemize}
+\item \textbf{Autenticazione}: stabilire un'associazione di fiducia tra il client e l'identità del principale.
+\item \textbf{Autorizzazione}: determinare quali risorse e operazioni un'utente autenticato può eseguire.
+\item \textbf{Controllo dell'accesso}: controllare se un operazione su una risorse è consentita, ad esempio possiamo controllare la validità del token di accesso che viene rilasciato ad un utente dopo aver effettuato l'autenticazione.
+\item \textbf{Tasso di controllo}: un controllo sul numero massimo di richieste da processare.
+\end{itemize}
+Quando recuperiamo i dati da una sorgente lenta, sono più appropriate delle chiamate asincrone, altrimenti l'interfaccia utente viene bloccata. In particolare, l'utente invia la richiesta e procede con il suo proprio flusso di esecuzione. Quando le risorse saranno pronte, riceverà una notifica. Per aggiornare delle risorse effettuiamo prima dei cambiamenti sulla nostra copia locale, poi li aggiorniamo asincronamente. Se la rete non è disponibile utilizziamo un database locale e un meccanismo di sincronizzazione che verrà eseguito quando la rete sarà nuovamente disponibile. Ad esempio, nel caso di una READ quando la rete è disponibile, restituisco un elemento placeholder, recupero i dati aggiornati e sostituisco il placeholder. Nel caso in cui la rete non fosse disponibile, mostro un messaggio all'utente. Ad esempio, nel caso di una CREATE, se la rete è disponibile utilizzo un thread secondario per aggiornare il server, altrimenti memorizzo tale richiesta. Quando la rete sarà disponibile, le operazioni appese saranno eseguite in sequenza.\\\\Quando diversi utenti (applicazioni) condividono un singolo dato su cui vengono eseguite delle operazioni di lettura e scrittura concorrenti, la sua consistenza potrebbe essere un problema (Teorema CAP). \textbf{Firebase} è un database in tempo reale che si occupa di questi problemi. In caso di un file, la sincronizzazione è gestita da uno speciale algoritmo e i conflitti vengono risolti, ad esempio realizzando una copia dei dati.
+\section{JSON Web Token}
+Esso è uno standard Internet per creare dei token di accesso basati su JSON che sostengono un determinato numero di richieste. Per esempio, un server potrebbe generare un token che viene assegnato alla richiesta del login come amministratore, e lo fornisce al client. Il client potrebbe utilizzare il token per provare che è loggato come amministratore. I tokens sono firmati con la chiave privata del server, così che entrambi possono verificare se il token sia legittimo o meno. Un token è costituito da tre informazioni: \textbf{Header}, il quale identifica quale algoritmo è stato utilizzato per generare la firma, il \textbf{Payload} che contiene una serie di richieste e la \textbf{firma}, il quale valida in sicurezza il token. Le richieste standard che possono essere inserite nel payload sono:
+\begin{itemize}
+\item iss: identifica l'ente che ha rilasciato il token.
+\item sub: identifica l'ente a cui è stato rilasciato il token.
+\item aud: identifica il destinatario del token. Ogni ente che rilascia dei token deve auto identificarsi con un valore, altrimenti il token deve essere rifiutato.
+\item exp: rappresenta la data di scadenza del token, dopo la quale esso non deve essere accettato.
+\item nbf: rappresenta la data di inizio di validità del token.
+\item iat: identifica la data in cui è stato rilasciato il token.
+\item jti: identificatore unico (case sensitive) del token anche fra differenti issuers.
+\end{itemize}
