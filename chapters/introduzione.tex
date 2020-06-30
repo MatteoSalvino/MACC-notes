@@ -1,50 +1,60 @@
 \chapter{Introduzione}
 L' \textbf{architettura multi-strato} indica un'architettura software in cui le varie funzionalità del software sono logicamente separate su più strati in comunicazione fra loro. Nell'ambito delle applicazioni web questi strati sono:
 \begin{itemize}
-\item \textbf{strato di presentazione}: E' il livello più alto dell'applicazione. Esso mostra le informazioni relative a servizi, elaborate dagli strati di livello più basso.
-\item \textbf{strato logico}: E' il livello che controlla le funzionalità di un'applicazione eseguendo elaborazioni dettagliate. In particolare, gestisce lo scambio di informazioni con lo strato di presentazione con varie elaborazioni e lo strato dei dati.
-\item \textbf{strato dei dati}: E' il livello che si occupa dei dati. In tale strato le informazioni vengono memorizzate e recuperate. Il suo compito è di mantenere i dati neutrali e indipendenti dallo strato logico.
+    \item \textbf{strato di presentazione}: È il livello più alto dell'applicazione. Esso mostra le informazioni relative a servizi, elaborate dagli strati di livello più basso.
+    \item \textbf{strato logico}: È il livello che controlla le funzionalità di un'applicazione eseguendo elaborazioni dettagliate. In particolare, gestisce lo scambio di informazioni con lo strato di presentazione con varie elaborazioni e lo strato dei dati.
+    \item \textbf{strato dei dati}: È il livello che si occupa dei dati. In tale strato le informazioni vengono memorizzate e recuperate. Il suo compito è di mantenere i dati neutrali e indipendenti dallo strato logico.
 \end{itemize}
-Ciascuno strato comunica direttamente con gli strati adiacenti, richiedendo ed offrendo servizi. Tale approccio fornisce un modello per gli sviluppatori per creare un'applicazione flessibile, riutilizzabile e di facile manutenibilità, visto che è possibile modificare separatamente uno specifico strato, senza influenzare i rimanenti.\\\\Un \textbf{mashup} è un'applicazione web ibrida, cioè tale da essere costituita da contenuti provenienti da diverse fonti. Ad esempio, un'applicazione per la prenotazione di un tavolo in un particolare ristorante, dove viene mostrata la sua ubicazione utilizzando il servizio Google Maps, le recensioni dei clienti passati per decidere se è un buon ristorante o meno, etc.\\\\Il \textbf{Fog computing} è un'architettura orizzontale utile a distribuire senza soluzione di continuità risorse e servizi di calcolo, immagazzinamento di dati, controllo e funzionalità di rete sull'infrastruttura che connette il cloud all'Internet delle cose (IoT). In altri termini, il Fog rappresenta un miglioramento e un'estensione del paradigma Cloud in supporto ad applicazione IoT che debbano rispettare dei precisi parametri di qualità del servizio per essere processati, quali latenza e banda disponibile per determinate connessioni, visto che il Cloud non li supporta efficientemente a causa dello spostamento dei dati dai confini della rete verso strutture di elaborazione centralizzate. 
+
+Ciascuno strato comunica direttamente con gli strati adiacenti, richiedendo ed offrendo servizi.
+Tale approccio fornisce un modello per gli sviluppatori per creare un'applicazione flessibile, riutilizzabile e di facile manutenibilità, visto che è possibile modificare separatamente uno specifico strato, senza influenzare i rimanenti.
+
+Un \textbf{mashup} è un'applicazione web ibrida, cioè tale da essere costituita da contenuti provenienti da diverse fonti. Ad esempio, un'applicazione per la prenotazione di un tavolo in un particolare ristorante, dove viene mostrata la sua ubicazione utilizzando il servizio Google Maps, le recensioni dei clienti passati per decidere se è un buon ristorante o meno, etc.
+
+Il \textbf{Fog computing} è un'architettura orizzontale utile a distribuire senza soluzione di continuità risorse e servizi di calcolo, immagazzinamento di dati, controllo e funzionalità di rete sull'infrastruttura che connette il cloud all'Internet delle cose (IoT). In altri termini, il Fog rappresenta un miglioramento e un'estensione del paradigma Cloud in supporto ad applicazione IoT che debbano rispettare dei precisi parametri di qualità del servizio per essere processati, quali latenza e banda disponibile per determinate connessioni, visto che il Cloud non li supporta efficientemente a causa dello spostamento dei dati dai confini della rete verso strutture di elaborazione centralizzate.
+
 \section{Metodi di progettazione}
 La progettazione e l'implementazione di un'applicazione viene raggiunta secondo dei determinati metodi di progettazione. Lo scopo di tali metodi è di guidare la struttura del software in modo da raggiungere un alto livello di flessibilità e manutenibilità del software. Si tratta di un organizzazione del codice in diverse componenti, in modo che la modifica all'interno di un componente non influenzi gli altri. Esistono differenti metodi di progettazione, fra cui:
 \begin{itemize}
-\item \textbf{MVC}: E' un metodo di progettazione in grado di separare la logica di presentazione dei dati dalla logica di business. Esso è costituito da tre componenti: 
-\begin{itemize}
-\item \textbf{Modello} cattura il comportamento dell'applicazione in termini di dominio del problema, indipendentemente dall'interfaccia utente. Esso gestisce dirittamente i dati, la logica e le regole dell'applicazione.
-\item \textbf{Vista}: si tratta di un qualsiasi rappresentazione in output di informazioni.
-\item \textbf{Controller}: si occupa della gestione dei comandi dell'utente ricevuti attraverso il componente precedente e li attua modificando lo stato degli altri due componenti.
+    \item \textbf{MVC}: è un metodo di progettazione in grado di separare la logica di presentazione dei dati dalla logica di business. Esso è costituito da tre componenti:
+          \begin{itemize}
+              \item \textbf{Modello} cattura il comportamento dell'applicazione in termini di dominio del problema, indipendentemente dall'interfaccia utente. Esso gestisce dirittamente i dati, la logica e le regole dell'applicazione.
+              \item \textbf{Vista}: si tratta di un qualsiasi rappresentazione in output di informazioni.
+              \item \textbf{Controller}: si occupa della gestione dei comandi dell'utente ricevuti attraverso il componente precedente e li attua modificando lo stato degli altri due componenti.
+          \end{itemize}
+    \item \textbf{MVP}: è un metodo derivato dal precedente approccio, per facilitare test di unità automatici e migliorare la separazione dei concetti nella logica di presentazione:
+          \begin{itemize}
+              \item \textbf{Modello}: è un'interfaccia che definisce i dati da mostrare.
+              \item \textbf{Vista}: è un'interfaccia passiva che mostra i dati e inoltra i comandi dell'utente al presentatore per agire su tali dati.
+              \item \textbf{Presentatore}: esso agisce sul modello e sulla vista. In particolare, recupera i dati dal modello e li elabora per mostrarli nella vista.
+          \end{itemize}
+          A differenza dell'approccio MVC, il modello e la vista non possono comunicare direttamente.
+    \item \textbf{MVVM}: un pattern software architetturale costituito dai seguenti elementi:
+          \begin{itemize}
+              \item \textbf{Modello}: il modello è un'implementazione del modello di dominio dell'applicazione che include un modello di dati insieme con la logica di business e validazione.
+              \item \textbf{Vista}: La vista è responsabile della definizione della struttura e l'aspetto di ciò che l'utente vede sullo schermo.
+              \item \textbf{ViewModel}: esso è un intermediario tra la vista e il modello, ed è responsabile per la gestione della logica e della vista. In altri termini, esso fornisce i dati dal modello in una forma che la vista li può utilizzare facilmente.
+              \item \textbf{Binder}: è il meccanismo fondamentale di tale pattern, con il quale il view model e la vista vengono costantemente mantenuti sincronizzati. Questo implica che le modifiche ai dati apportate dall'utente attraverso la vista verranno automaticamente riportate nel view model (e viceversa), risparmiando tale onere allo sviluppatore.
+          \end{itemize}
 \end{itemize}
-\item \textbf{MVP}: E' un metodo derivato dal precedente approccio, per facilitare test di unità automatici e migliorare la separazione dei concetti nella logica di presentazione:
-\begin{itemize}
-\item \textbf{Modello}: è un'interfaccia che definisce i dati da mostrare.
-\item \textbf{Vista}: è un'interfaccia passiva che mostra i dati e inoltra i comandi dell'utente al presentatore per agire su tali dati.
-\item \textbf{Presentatore}: esso agisce sul modello e sulla vista. In particolare, recupera i dati dal modello e li elabora per mostrarli nella vista.
-\end{itemize}
-A differenza dell'approccio MVC, il modello e la vista non possono comunicare direttamente.
-\item \textbf{MVVM}: un pattern software architetturale costituito dai seguenti elementi:
-\begin{itemize}
-\item \textbf{Modello}: il modello è un'implementazione del modello di dominio dell'applicazione che include un modello di dati insieme con la logica di business e validazione.
-\item \textbf{Vista}: La vista è responsabile della definizione della struttura e l'aspetto di ciò che l'utente vede sullo schermo.
-\item \textbf{ViewModel}: esso è un intermediario tra la vista e il modello, ed è responsabile per la gestione della logica e della vista. In altri termini, esso fornisce i dati dal modello in una forma che la vista li può utilizzare facilmente.
-\item \textbf{Binder}: è il meccanismo fondamentale di tale pattern, con il quale il view model e la vista vengono costantemente mantenuti sincronizzati. Questo implica che le modifiche ai dati apportate dall'utente attraverso la vista verranno automaticamente riportate nel view model (e viceversa), risparmiando tale onere allo sviluppatore.
-\end{itemize}
-\end{itemize}
+
 \section{Framework}
 Un \textbf{framework} è un framework software progettato per supportare lo sviluppo di siti web dinamici, applicazione web e servizi web. Il suo scopo è quello di alleggerire il lavoro associato allo sviluppo delle attività più comuni di un'applicazione web da parte dello sviluppatore. Molti framework forniscono ad esempio delle librerie per l'accesso alle basi di dati o per la gestione della sessione dell'utente.\\\\Ci sono diversi tipi di applicazioni mobili:
 \begin{itemize}
-\item siti web per dispositivi mobili: inoltrare i contenuti web ai dispositivi mobili utilizzando lo stile di navigazione dei tradizionali siti web.
-\item web mobile: applicazioni web che mimano il comportamento e l'aspetto di applicazioni native, così come la navigazione.
-\item Android/iOS native: applicazioni installate sui dispositivi acquistate dall'app store.
-\item Ibride: mix fra applicazioni native e web
-\item Native: applicazioni in C/C++.
+    \item siti web per dispositivi mobili: inoltrare i contenuti web ai dispositivi mobili utilizzando lo stile di navigazione dei tradizionali siti web.
+    \item web mobile: applicazioni web che mimano il comportamento e l'aspetto di applicazioni native, così come la navigazione.
+    \item Android/iOS native: applicazioni installate sui dispositivi acquistate dall'app store.
+    \item Ibride: mix fra applicazioni native e web
+    \item Native: applicazioni in C/C++.
 \end{itemize}
+
 \section{Metodologia Agile}
 La metodologia Agile si riferisce a un insieme di metodi di sviluppo del software emersi a partire dai primi anni 2000 e fondati su un insieme di principi comuni. La gran parte dei metodi agile tenta di ridurre il rischio di fallimento sviluppando il software in finestre di tempo limitate chiamate iterazioni. Ogni iterazione è un piccolo progetto a se stante e deve contenere tutto ciò che è necessario per rilasciare un piccolo incremento nelle funzionalità del software: planning, analisi dei requisiti, progettazione, test e documentazione. Anche se viene ottenuto un risultato intermedio, deve comunque essere pubblicato e cercare di avvicinarsi sempre di più alle richieste del cliente nelle successive iterazioni. L'obiettivo di tale metodologia è la completa soddisfazione del cliente. I principi su cui si basa tale metodologia sono i seguenti: le persone e le interazioni sono più importanti dei processi e degli strumenti, è più importante avere software funzionante che documentazione, bisogna collaborare con i clienti oltre che rispettare il contratto, e bisogna essere pronti a rispondere ai cambiamenti oltre che aderire alla pianificazione.
+
 \section{Behavior Driven Design}
 Il BDD è una metodologia di sviluppo del software basata sul TDD. Il BDD combina le tecniche generali e i principi del TDD, con idee prese dal domain-driven design e dal design orientato agli oggetti, per fornire agli sviluppatori software degli strumenti e dei processi condivisi per collaborare nello sviluppo software. In particolare esso specifica che i test di una determinata porzione del software devono essere specificati in termini del desiderato comportamento di tale porzione. Il comportamento di ciascuna sezione viene specificato utilizzando delle user stories. Ogni user story adotta la seguente struttura:
 \begin{itemize}
-\item \textbf{As a}: la persona o il ruolo che beneficerà di tale feature;
-\item \textbf{I want}: la feature;
-\item \textbf{so that}: il beneficio o il valore della feature.
+    \item \textbf{As a}: la persona o il ruolo che beneficerà di tale feature;
+    \item \textbf{I want}: la feature;
+    \item \textbf{so that}: il beneficio o il valore della feature.
 \end{itemize}
